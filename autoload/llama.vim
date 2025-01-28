@@ -9,6 +9,8 @@ highlight llama_hl_info guifg=#77ff2f ctermfg=119
 "   n_prefix:         number of lines before the cursor location to include in the local prefix
 "   n_suffix:         number of lines after  the cursor location to include in the local suffix
 "   n_predict:        max number of tokens to predict
+"   top_k:            limits the next token selection to the K most probable tokens.
+"   top_p:            limits the next token selection to a subset of tokens with a cumulative probability above a threshold P
 "   t_max_prompt_ms:  max alloted time for the prompt processing (TODO: not yet supported)
 "   t_max_predict_ms: max alloted time for the prediction
 "   show_info:        show extra info about the inference (0 - disabled, 1 - statusline, 2 - inline)
@@ -39,6 +41,8 @@ let s:default_config = {
     \ 'n_prefix':         256,
     \ 'n_suffix':         64,
     \ 'n_predict':        128,
+    \ 'top_k':            40,
+    \ 'top_p':            0.99,
     \ 't_max_prompt_ms':  500,
     \ 't_max_predict_ms': 500,
     \ 'show_info':        2,
@@ -415,8 +419,8 @@ function! llama#fim(is_auto, cache) abort
         \ 'prompt':           l:prompt,
         \ 'n_predict':        g:llama_config.n_predict,
         \ 'n_indent':         l:indent,
-        \ 'top_k':            40,
-        \ 'top_p':            0.99,
+        \ 'top_k':            g:llama_config.top_k,
+        \ 'top_p':            g:llama_config.top_p,
         \ 'stream':           v:false,
         \ 'samplers':         ["top_k", "top_p", "infill"],
         \ 'cache_prompt':     v:true,

@@ -70,6 +70,8 @@ Currently the default config is:
 			\ 'n_prefix':         256,
 			\ 'n_suffix':         64,
 			\ 'n_predict':        128,
+			\ 'top_k':            40,
+			\ 'top_p':            0.99,
 			\ 't_max_prompt_ms':  500,
 			\ 't_max_predict_ms': 500,
 			\ 'show_info':        2,
@@ -94,6 +96,19 @@ Currently the default config is:
 						in the local suffix
 
 - {n_predict}			max number of tokens to predict
+
+When querying llama-server we specify three samplers which will be executed
+sequentially during the sample step: `top-k` -> `top-p` -> `infill`
+
+- {top_k}				Limits the next token selection to the K most
+						probable tokens during sampling. A higher value
+						allows more tokens to be considered for the next
+						sampler.
+
+- {top_p}				Limits the next token selection to a subset of tokens
+						with a cumulative probability above a threshold P. A
+						higher value allows more tokens to be considered for
+						the next sampler.
 
 - {t_max_prompt_ms}		max alloted time for the prompt processing
 						(TODO: not yet supported)
